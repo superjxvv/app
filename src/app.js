@@ -15,8 +15,8 @@ let Color = {
 
 function setupSubscription() {
     // Simple query
-    API.graphql(graphqlOperation(queries.listDevices))
-        .then(data => data.data.listDevices.items.forEach(addToBody));
+    // API.graphql(graphqlOperation(queries.listDevices))
+    //     .then(data => data.data.listDevices.items.forEach(addToBody));
 
     // Query using a parameter
     // API.graphql(graphqlOperation(queries.getDevice, { id: 1 }))
@@ -61,9 +61,10 @@ function test(id=_id) {
     const obj = {
         points: []
     };
-    for (let i = 0; i < 10; i++) {
-        obj.points.push(P(now + i * 5000, chroma.random()))
-    }
+    //for (let i = 0; i < 10; i++) {
+        obj.points.push(P(now, chroma("black")))
+        obj.points.push(P(now + 1000, chroma("red")))
+    //}
     API.graphql(graphqlOperation(mutations.updateDevice, {
         input: {
             id: id,
@@ -153,6 +154,7 @@ function init() {
     window.test = test;
     window.testBlast = testBlast;
     window.Color = Color;
+    window.stop = stop;
 }
 
 function fetchUpdates(id) {
@@ -167,6 +169,24 @@ function createDevice(id, seat) {
     API.graphql(graphqlOperation(mutations.createDevice, {input: {id, seat}}))
         .then(console.log)
 
+}
+
+function stop(id=_id) {
+    const now = Date.now();
+    const obj = {
+        points: []
+    };
+    //for (let i = 0; i < 10; i++) {
+        obj.points.push(P(now, chroma("black")))
+        obj.points.push(P(now + 1000, chroma("black")))
+    //}
+    API.graphql(graphqlOperation(mutations.updateDevice, {
+        input: {
+            id: id,
+            data: JSON.stringify(obj)
+        }
+    }))
+        .catch(console.error)
 }
 
 init();
