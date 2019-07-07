@@ -74,8 +74,7 @@ function test(id=_id) {
         .catch(console.error)
 }
 
-function testBlast(nextToken) {
-    const startTime = Date.now();
+function testBlast(nextToken, startTime = Date.now()) {
     API.graphql(graphqlOperation(queries.listDevices, {nextToken}))
         .then(value => {
             value.data.listDevices.items.forEach(item => {
@@ -84,7 +83,7 @@ function testBlast(nextToken) {
             });
             // console.log(value.data.listDevices.nextToken)
             if (value.data.listDevices.nextToken) {
-                testBlast(value.data.listDevices.nextToken)
+                testBlast(value.data.listDevices.nextToken, startTime)
             }
         })
 }
@@ -94,9 +93,12 @@ function cascade(id, now) {
     const obj = {
         points: []
     };
-    for (let i = 0; i < 10; i++) {
-        const ratio = Math.abs(Math.sin(2 * Math.PI * i / 6 + id%10))
-        obj.points.push(P(now + i * 1000, chroma.mix('yellow', 'red', ratio)))
+    for (let i = 0; i < 30; i++) {
+        const x = id % 10;
+        const y = Math.floor(id/10);
+        const dist = Math.pow(x - 5, 2) + Math.pow(y - 5, 2);
+        const ratio = 0.5 + 0.5 * Math.pow(Math.sin(2 * Math.PI * i / 6 + dist/200), 10)
+        obj.points.push(P(now + i * 1000, chroma.mix('yellow', '#F90', ratio)))
     }
     API.graphql(graphqlOperation(mutations.updateDevice, {
         input: {
@@ -153,6 +155,7 @@ function setupCanvas() {
 function init() {
     const key = window.location.search.split("id=")[1];
     window.test = test;
+    window.stop = stop;
     window.testBlast = testBlast;
     window.Color = Color;
     if (!key) {
