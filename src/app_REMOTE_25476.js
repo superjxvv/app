@@ -61,10 +61,9 @@ function test(id=_id) {
     const obj = {
         points: []
     };
-    //for (let i = 0; i < 10; i++) {
-        obj.points.push(P(now, chroma("black")))
-        obj.points.push(P(now + 1000, chroma("red")))
-    //}
+    for (let i = 0; i < 10; i++) {
+        obj.points.push(P(now + i * 5000, chroma.random()))
+    }
     API.graphql(graphqlOperation(mutations.updateDevice, {
         input: {
             id: id,
@@ -155,7 +154,6 @@ function init() {
     window.test = test;
     window.testBlast = testBlast;
     window.Color = Color;
-    window.black = black;
     if (!key) {
         console.log("No key specified");
         return
@@ -188,24 +186,6 @@ function createDevice(id, seat) {
     API.graphql(graphqlOperation(mutations.createDevice, {input: {id, seat}}))
         .then(console.log)
 
-}
-
-function black(id=_id) {
-    const now = Date.now();
-    const obj = {
-        points: []
-    };
-    //for (let i = 0; i < 10; i++) {
-        obj.points.push(P(now, chroma("black")))
-        obj.points.push(P(now + 1000, chroma("black")))
-    //}
-    API.graphql(graphqlOperation(mutations.updateDevice, {
-        input: {
-            id: id,
-            data: JSON.stringify(obj)
-        }
-    }))
-        .catch(console.error)
 }
 
 init();

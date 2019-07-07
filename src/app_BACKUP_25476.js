@@ -155,7 +155,6 @@ function init() {
     window.test = test;
     window.testBlast = testBlast;
     window.Color = Color;
-    window.black = black;
     if (!key) {
         console.log("No key specified");
         return
@@ -174,6 +173,13 @@ function init() {
         .catch(console.error);
     setupSubscription();
     window.requestAnimationFrame(tick);
+<<<<<<< HEAD
+    window.test = test;
+    window.testBlast = testBlast;
+    window.Color = Color;
+    window.stop = stop;
+=======
+>>>>>>> asd
 }
 
 function fetchUpdates(id) {
@@ -190,7 +196,7 @@ function createDevice(id, seat) {
 
 }
 
-function black(id=_id) {
+function stop(id=_id) {
     const now = Date.now();
     const obj = {
         points: []

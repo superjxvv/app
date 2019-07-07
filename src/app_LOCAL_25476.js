@@ -75,36 +75,17 @@ function test(id=_id) {
 }
 
 function testBlast(nextToken) {
-    const startTime = Date.now();
     API.graphql(graphqlOperation(queries.listDevices, {nextToken}))
         .then(value => {
             value.data.listDevices.items.forEach(item => {
                 console.log(item.id)
-                cascade(item.id, startTime)
+                test(item.id)
             });
             // console.log(value.data.listDevices.nextToken)
             if (value.data.listDevices.nextToken) {
                 testBlast(value.data.listDevices.nextToken)
             }
         })
-}
-
-function cascade(id, now) {
-    // const now = Date.now() + 5000;
-    const obj = {
-        points: []
-    };
-    for (let i = 0; i < 10; i++) {
-        const ratio = Math.abs(Math.sin(2 * Math.PI * i / 6 + id%10))
-        obj.points.push(P(now + i * 1000, chroma.mix('yellow', 'red', ratio)))
-    }
-    API.graphql(graphqlOperation(mutations.updateDevice, {
-        input: {
-            id: id,
-            data: JSON.stringify(obj)
-        }
-    }))
-        .catch(console.error)
 }
 
 function updateCanvas() {
@@ -152,10 +133,6 @@ function setupCanvas() {
 
 function init() {
     const key = window.location.search.split("id=")[1];
-    window.test = test;
-    window.testBlast = testBlast;
-    window.Color = Color;
-    window.black = black;
     if (!key) {
         console.log("No key specified");
         return
@@ -174,6 +151,10 @@ function init() {
         .catch(console.error);
     setupSubscription();
     window.requestAnimationFrame(tick);
+    window.test = test;
+    window.testBlast = testBlast;
+    window.Color = Color;
+    window.stop = stop;
 }
 
 function fetchUpdates(id) {
@@ -190,7 +171,7 @@ function createDevice(id, seat) {
 
 }
 
-function black(id=_id) {
+function stop(id=_id) {
     const now = Date.now();
     const obj = {
         points: []
