@@ -97,8 +97,8 @@ function cascade(id, now) {
         const x = id % 10;
         const y = Math.floor(id/10);
         const dist = Math.pow(x - 5, 2) + Math.pow(y - 5, 2);
-        const ratio = 0.5 + 0.5 * Math.pow(Math.sin(2 * Math.PI * i / 6 + dist/200), 10)
-        obj.points.push(P(now + i * 1000, chroma.mix('yellow', '#F90', ratio)))
+        const ratio = 0.5 + 0.5 * Math.pow(Math.sin(2 * Math.PI * i / 6 + id/10), 10)
+        obj.points.push(P(now + i * 1000, chroma.mix('yellow', 'red', ratio)))
     }
     API.graphql(graphqlOperation(mutations.updateDevice, {
         input: {
