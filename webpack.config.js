@@ -23,7 +23,9 @@ module.exports = {
         hot: true
     },
     plugins: [
+        new CopyWebpackPlugin(['controller.html']),
         new CopyWebpackPlugin(['index.html']),
+        new CopyWebpackPlugin(['demogrid.html']),
         new webpack.HotModuleReplacementPlugin()
     ]
 };

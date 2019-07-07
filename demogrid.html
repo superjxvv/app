@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+    const w = 100;
+    const h = 100;
+    const rows = 5;
+    const cols = 5;
+    const mainDiv = document.createElement('div')
+    for(let i = 0; i < rows; i++) {
+        const rowDiv = document.createElement('div')
+        for (let j = 0; j < cols; j++) {
+            const iframe = document.createElement('iframe')
+            iframe.src=`index.html?id=${i}${j}`
+            iframe.width = w;
+            iframe.height = h;
+            rowDiv.appendChild(iframe)
+        }
+        mainDiv.appendChild(rowDiv)
+    }
+    document.body.appendChild(mainDiv)
+</script>
+</body>
+</html>
