@@ -1,0 +1,5 @@
+type Device @model {
+  seat: String!
+  id: ID!
+  data: AWSJSON
+}
